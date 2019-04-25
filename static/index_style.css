@@ -1,0 +1,11 @@
+li a{
+    text-align: center;
+    margin: 5px;
+}
+button a{
+    color: white;
+}
+
+#content-main{
+    /*margin-top: 100px;*/
+}
