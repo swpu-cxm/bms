@@ -76,14 +76,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'bms',  # 数据库名
-        'HOST': 'mysql.cxmgxj.cn',
-        'PASSWORD': 'cxm1314520',
-        'PORT': 10015,
+        'HOST': '127.0.0.1',
+        'PASSWORD': '123456',
+        'PORT': 3306,
         'USER': 'root',
-        # 'HOST': '127.0.0.1',
-        # 'PASSWORD': '123456',
-        # 'PORT': 3306,
-        # 'USER': 'root',
     }
 }
 
