@@ -7,6 +7,11 @@ from index import models
 # Create your views here.
 
 def index(request):
+    """
+    首页视图函数,查询所有的出版社,书籍,作者信息
+    :param request:
+    :return:出版社,书籍,作者信息
+    """
     page_num = request.GET.get('page_num')
     if not page_num:
         page_num = 1
@@ -14,23 +19,28 @@ def index(request):
     all_publisher = models.Publisher.objects.all()
     all_author = models.Author.objects.all()
     return render(request, 'index.html',
-                  {"all_publisher": all_publisher, 'all_book': all_book, 'all_author': all_author, 'page_num': page_num})
+                  {"all_publisher": all_publisher, 'all_book': all_book, 'all_author': all_author,
+                   'page_num': page_num})
 
 
 def add_publisher(request):
-    all_author = models.Author.objects.all()
-    all_publisher = models.Publisher.objects.all()
+    """
+    添加出版社视图函数
+    :param request:
+    :return:重定向回首页
+    """
     if request.method == "POST":
         publisher_name = request.POST.get('publisher')
         models.Publisher.objects.create(name=publisher_name)
         return redirect('/')
-    return render(request, 'add_publisher.html', {"all_publisher": all_publisher, 'all_author': all_author})
-
-
-
 
 
 def add_book(request):
+    """
+    添加书籍视图函数
+    :param request:
+    :return:重定向回书籍管理页面
+    """
     if request.method == "POST":
         title = request.POST.get('title')
         author = request.POST.getlist('author')
@@ -41,6 +51,11 @@ def add_book(request):
 
 
 def add_author(request):
+    """
+    添加作者视图函数
+    :param request:
+    :return: 重定向回作者管理页面
+    """
     if request.method == 'POST':
         author_name = request.POST.get('author_name')
         models.Author.objects.create(name=author_name)
@@ -48,6 +63,11 @@ def add_author(request):
 
 
 def update_publisher(request):
+    """
+    更新出版社信息视图函数
+    :param request:
+    :return: 重定向回出版社管理页面
+    """
     if request.method == "POST":
         publisher_id = request.POST.get('id')
         old_publisher = models.Publisher.objects.get(id=publisher_id)
@@ -55,13 +75,16 @@ def update_publisher(request):
         old_publisher.name = name
         old_publisher.save()
         return redirect('/')
-    # return render(request, 'update_publisher.html', {'old_publisher': old_publisher})
 
 
 def update_book(request):
+    """
+        更新书籍信息视图函数
+        :param request:
+        :return: 重定向回书籍管理页面
+        """
     if request.method == 'POST':
         book_id = request.POST.get('id')
-        # print(book_id)
         title = request.POST.get('title')
         author_list = request.POST.getlist('author')
         publisher = request.POST.get('publisher')
@@ -75,6 +98,11 @@ def update_book(request):
 
 
 def update_author(request):
+    """
+        更新作者信息视图函数
+        :param request:
+        :return: 重定向回作者管理页面
+        """
     if request.method == 'POST':
         author_id = request.POST.get('id')
         author_name = request.POST.get('author_name')
@@ -85,6 +113,12 @@ def update_author(request):
 
 
 def delete_publisher(request):
+    """
+    删除出版社视图函数
+    在删除出版社时,前端模态框通过ajax post请求返回出版社下包含的书籍信息.提示是否要删除其依赖
+    :param request:
+    :return:重定向回出版社管理页面
+    """
     if request.method == "GET":
         publisher_id = request.GET.get('id')
         models.Publisher.objects.get(id=publisher_id).delete()
@@ -97,13 +131,25 @@ def delete_publisher(request):
             title_list.append(book.title)
         return HttpResponse(json.dumps(title_list), content_type="application/json")
 
+
 def delete_book(request):
+    """
+    删除书籍视图函数
+    :param request:
+    :return: 重定向回书籍管理页面
+    """
     book_id = request.GET.get('id')
     models.Book.objects.get(id=book_id).delete()
     return redirect('/?page_num=2')
 
 
 def delete_author(request):
+    """
+    删除作者视图函数
+    在删除作者时,前端模态框通过ajax post请求返回作者包含的书籍信息.提示是否要删除其依赖
+    :param request:
+    :return:重定向回作者管理页面
+    """
     if request.method == "GET":
         author_id = request.GET.get('id')
         models.Author.objects.get(id=author_id).delete()
@@ -115,12 +161,3 @@ def delete_author(request):
         for book in book_obj:
             title_list.append(book.title)
         return HttpResponse(json.dumps(title_list), content_type="application/json")
-
-
-def test(request):
-    author_id = 3
-    book_obj = models.Book.objects.all().filter(author=author_id)
-    title_list = []
-    for book in book_obj:
-        print(book.title)
-    return HttpResponse('ok')

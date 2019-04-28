@@ -28,5 +28,4 @@ urlpatterns = [
     path('update_author/', views.update_author),
     path('delete_author/', views.delete_author),
     path('delete_book/', views.delete_book),
-    path('test/', views.test)
 ]
