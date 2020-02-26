@@ -5,7 +5,7 @@
     - 出版社,书籍,作者的增删改查 
 	- 删除作者或出版社时,通过ajax渲染模态框提示是否删除依赖其关系的书籍数据.
 ### 如何开始:
-    - git clone git@github.com:swpu-cxm/bms.git
+    - git clone https://github.com/swpu-cxm/bms.git
     - cd bms
     - pipenv install
     - pipenv shell
